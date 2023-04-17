@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const router = require("./routers/router");
 const MONGODB_ATLES = process.env.MONGODB_ATLES_CONNECTION_URL;
+const firstUrl = process.env.FIRST_LOCALHOST_ORIGIN_ACCESS;
+const secondUrl = process.env.SECOND_NETLIFY_ORIGIN_ACCESS;
 
 // creating my express app
 const app = express();
@@ -24,7 +26,7 @@ mongoose
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = 'http://localhost:3000, https://fivem-todoapp.netlify.app';
+const allowedOrigins = `${secondUrl}, ${firstUrl}`;
 app.use(
   CORS({
     origin: allowedOrigins,
