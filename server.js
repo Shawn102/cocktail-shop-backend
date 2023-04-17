@@ -26,13 +26,18 @@ mongoose
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = `${secondUrl}, ${firstUrl}`;
-app.use(
-  CORS({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+const allowedOrigins = [secondUrl, firstUrl];
+app.use(CORS({
+  origin: function(origin, callback) {
+    // Check if the origin is in the allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use(router);
 
 const port = process.env.PORT || 5600;
